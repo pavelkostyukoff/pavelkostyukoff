@@ -3,6 +3,7 @@ package com.example.kostyukoff.ui.latest
 import androidx.lifecycle.MutableLiveData
 import com.example.kostyukoff.model.LatestsEntity
 import com.example.kostyukoff.network.RestApiService
+import com.example.kostyukoff.network.RestApiService.Companion.createService
 
 import kotlinx.coroutines.*
 import retrofit2.HttpException
@@ -18,7 +19,7 @@ class LatestsRepository() {
     private val coroutineScope = CoroutineScope(Dispatchers.IO + completableJob)
 
     private val thisApiService by lazy {
-        RestApiService.createService()
+        createService()
     }
 
     fun getMutableLiveData():MutableLiveData<List<LatestsEntity>> {
