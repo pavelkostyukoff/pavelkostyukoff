@@ -1,6 +1,5 @@
 package com.example.kostyukoff.ui.main
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.example.kostyukoff.R
 import com.example.kostyukoff.databinding.FragmentMainBinding
 import com.example.kostyukoff.model.LatestsEntity
 import com.example.kostyukoff.ui.latest.LatestState
@@ -25,15 +23,16 @@ class PlaceholderFragment : Fragment() {
     private lateinit var pageViewModel: PageViewModel
     private var _binding: FragmentMainBinding? = null
     private val latestViewModel: LatestViewModel by viewModel()
-
+    var latests: List<LatestsEntity> = emptyList()
 
     private val binding get() = _binding!!
     var textArticle: TextView? = null
     var image: ImageView? = null
+    var countPage: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-       /* pageViewModel = ViewModelProvider(this).get(PageViewModel::class.java).apply {
+      /*  ViewModelProvider(this).get(LatestViewModel::class.java).apply {
             setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 1)
         }*/
     }
@@ -42,38 +41,32 @@ class PlaceholderFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         val root = binding.root
         textArticle = binding.textPost
         image = binding.imagePost
-       /* latestViewModel.let {
-            it.allLatestPosts.observe(viewLifecycleOwner, Observer { newsList ->
-                //prepareRecyclerView(newsList)
-                newsList
-            })
-        }*/
-       /* pageViewModel.text.observe(viewLifecycleOwner, Observer {
-            text.text = it
-        })*/
-   /*     pageViewModel.image.observe(viewLifecycleOwner, Observer {
-            image.background = it
-        return root*/
+        latestViewModel.text.observe(viewLifecycleOwner, Observer {
+            countPage = it
+            renderUiData(latests, it)
+            //todo перезагрузить страницу ui
+        })
 
         latestViewModel.state.observe(viewLifecycleOwner,{
             when(it) {
                 is LatestState.Success -> {
-                    renderUiMarkers(it.latests)
+                    latests = it.latests
+                    renderUiData(it.latests, countPage)
                 }
             }
         })
 
         return root
     }
-    private fun renderUiMarkers(latest: List<LatestsEntity>) {
-        val img = latest.firstOrNull()?.name
+    private fun renderUiData(latest: List<LatestsEntity>, count: Int) {
+        if (latest.isNotEmpty()) {
+        val img = latest.get(count).name
         var output =  StringBuilder().append(
-            img?.substring(
+            img.substring(
                 0,
                 4
             )
@@ -81,7 +74,7 @@ class PlaceholderFragment : Fragment() {
             .append("s").append(img?.length?.let {
                 img.substring(4, it)
             }).toString()
-       if (img?.startsWith("https")!!) {
+       if (img.startsWith("https")!!) {
            output = img
        }
 
@@ -97,9 +90,19 @@ class PlaceholderFragment : Fragment() {
         latest.map {
             textArticle?.text = name
         }
+        }
     }
     companion object {
+        /**
+         * The fragment argument representing the section number for this
+         * fragment.
+         */
         private const val ARG_SECTION_NUMBER = "section_number"
+
+        /**
+         * Returns a new instance of this fragment for the given section
+         * number.
+         */
         @JvmStatic
         fun newInstance(sectionNumber: Int): PlaceholderFragment {
             return PlaceholderFragment().apply {
@@ -110,9 +113,7 @@ class PlaceholderFragment : Fragment() {
         }
     }
 
-
-
-    override fun onDestroyView() {
+override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }

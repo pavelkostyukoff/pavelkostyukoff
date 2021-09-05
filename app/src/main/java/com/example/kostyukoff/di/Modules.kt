@@ -12,12 +12,13 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val module =  module {
+    viewModel { PageViewModel(get()) }
+
     viewModel { LatestViewModel(get()) }
     single { LocalDataSource(get()) } bind LatestsDataSource::class
 
     single { LatestsRepositoryImpl(get()) } bind LatestsRepository::class
 
 
-    viewModel { PageViewModel(get()) }
     factory { GetLatestsUseCase(get()) }
 }

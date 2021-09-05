@@ -19,16 +19,12 @@ class PageViewModel(private val useCase: GetLatestsUseCase) : ViewModel() {
     private val _image = MutableLiveData<String>()
     var list = listOf<LatestsEntity>()
     private val stateInternal = MutableLiveData<LatestState>(LatestState.Loading)
-    val state : LiveData<LatestState> = stateInternal
-    //val text: LiveData<String> = Transformations.map(_index) {
-
-        //"${list.firstOrNull()?.linkGif}: $it"
-    //}
+    val text: LiveData<Int> = MutableLiveData<Int>()
     init {
         viewModelScope.launch {
             useCase.getLatests()
                 .map {
-                    LatestState.Success(it) as LatestState
+                    LatestState.Success(it,_index.value) as LatestState
                 }
                 .catch {
                     emit(LatestState.Error)

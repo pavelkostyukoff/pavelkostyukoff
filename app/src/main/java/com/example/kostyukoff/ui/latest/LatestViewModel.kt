@@ -11,10 +11,11 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class LatestViewModel(private val useCase: GetLatestsUseCase) :ViewModel() {
-
+    private val _index = MutableLiveData<Int>()
     private val stateInternal = MutableLiveData<LatestState>(LatestState.Loading)
     val state : LiveData<LatestState> = stateInternal
     var list = listOf<LatestsEntity>()
+    val text: LiveData<Int> = MutableLiveData<Int>()
 
     //private val movieRepository= LatestsRepository()
     //val allLatestPosts: MutableLiveData<List<LatestsEntity>> get() = movieRepository.getMutableLiveData()
@@ -23,7 +24,7 @@ class LatestViewModel(private val useCase: GetLatestsUseCase) :ViewModel() {
         viewModelScope.launch {
             useCase.getLatests()
                 .map {
-                    LatestState.Success(it) as LatestState
+                    LatestState.Success(it, 0) as LatestState
                 }
                 .catch {
                     emit(LatestState.Error)
@@ -32,5 +33,9 @@ class LatestViewModel(private val useCase: GetLatestsUseCase) :ViewModel() {
                     stateInternal.value = it
                 }
         }
+    }
+
+    fun setIndex(index: Int) {
+        _index.value = index
     }
 }

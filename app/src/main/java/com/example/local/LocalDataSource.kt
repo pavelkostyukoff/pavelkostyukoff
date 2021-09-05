@@ -13,7 +13,7 @@ import java.io.Reader
 
 class LocalDataSource(private val context: Context) : LatestsDataSource {
     override suspend fun getLatests(): List<LatestsEntity> {
-        val raw: InputStream = context.resources.openRawResource(R.raw.markers)
+        val raw: InputStream = context.resources.openRawResource(R.raw.latest)
         val rd: Reader = BufferedReader(InputStreamReader(raw))
         val gson = Gson()
         val cityJson = gson.fromJson(rd, LatestsJson::class.java)
