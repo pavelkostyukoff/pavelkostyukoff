@@ -47,12 +47,12 @@ class PlaceholderFragment : Fragment() {
         val root = binding.root
         textArticle = binding.textPost
         image = binding.imagePost
-        latestViewModel.let {
+       /* latestViewModel.let {
             it.allLatestPosts.observe(viewLifecycleOwner, Observer { newsList ->
                 //prepareRecyclerView(newsList)
                 newsList
             })
-        }
+        }*/
        /* pageViewModel.text.observe(viewLifecycleOwner, Observer {
             text.text = it
         })*/

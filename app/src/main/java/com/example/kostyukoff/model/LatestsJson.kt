@@ -4,7 +4,8 @@ import com.google.gson.annotations.SerializedName
 
 class LatestsJson {
     @SerializedName("result")
-    val results: List<LatestJson>? = null
+    val latest : List<LatestJson> = emptyList()
+
     @SerializedName("totalCount")
     val totalCount: Int = 0
 }

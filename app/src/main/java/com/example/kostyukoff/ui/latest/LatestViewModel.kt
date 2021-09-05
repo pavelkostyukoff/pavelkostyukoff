@@ -16,8 +16,8 @@ class LatestViewModel(private val useCase: GetLatestsUseCase) :ViewModel() {
     val state : LiveData<LatestState> = stateInternal
     var list = listOf<LatestsEntity>()
 
-    private val movieRepository= LatestsRepository()
-    val allLatestPosts: MutableLiveData<List<LatestsEntity>> get() = movieRepository.getMutableLiveData()
+    //private val movieRepository= LatestsRepository()
+    //val allLatestPosts: MutableLiveData<List<LatestsEntity>> get() = movieRepository.getMutableLiveData()
 
     init {
         viewModelScope.launch {

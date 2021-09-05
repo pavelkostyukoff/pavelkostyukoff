@@ -1,5 +1,4 @@
 package com.example.kostyukoff.network
-import com.example.kostyukoff.model.LatestsEntity
 import com.example.kostyukoff.model.LatestsJson
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Deferred
@@ -11,7 +10,6 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 import retrofit2.http.GET
 import retrofit2.http.Path
-import retrofit2.http.Query
 
 interface RestApiService {
     @GET("{category}/{number}?json=true") //https://developerslife.ru/latest/0?json=true
